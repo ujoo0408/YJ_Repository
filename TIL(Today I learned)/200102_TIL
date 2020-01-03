@@ -1,0 +1,11 @@
+오늘 한 것.
+
+1. 스프링으로 게시판 만들기 진행
+   늘 환경설정 후에 로그 인터셉터 설정 부분에서 여러가지 에러로 막혔는데 오늘 그것들을 다 해결했다.
+   
+   * The import org.apache.commons cannot be resolved 오류
+     => commons logging 1.1 1 jar 파일을 다운 받아 라이브러리를 추가해서 해결했다
+   * Servlet.init() 호출이 예외....  'jsonView' 오류
+     => json mapping을 수정해서 해결
+   * 에러메시기 없이 로그가 출력되지 않는 부분은 다른 경로의 log4j 설정을 해주지 않아서 였다....
+     이건 실수여서 찾기가 더 힘들었던 오류ㅠㅠㅠ
