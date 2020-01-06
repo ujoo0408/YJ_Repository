@@ -1,0 +1,13 @@
+오늘 한 것.
+1. 게시판 생성을 위해 마이바티스를 이클립스와 연동
+
+2. MySQL 다운로드 후 스키마 생성.
+  - 게시판 생성을 참고하는 곳에서는 오라클을 사용했는데 MySQL과는 문법이 다른 부분이 있어서 그 부분을 수정했다.
+  
+3.  Error creating bean with name 'org.springframework.web.servlet.handler.MappedInterceptor#0': 
+    Cannot create inner bean 'loggerInterceptor' of type [dashboard.common.logger.LoggerInterceptor] while setting constructor argument; 
+    nested exception is org.springframework.beans.factory.CannotLoadBeanClassException: 
+    Cannot find class [dashboard.common.logger.LoggerInterceptor] for bean with name 'loggerInterceptor' defined in ServletContext resource [/WEB-INF/config/action-servlet.xml]; 
+    nested exception is java.lang.ClassNotFoundException: dashboard.common.logger.LoggerInterceptor
+    => /WEB-INF/config/action-servlet.xml, LoggerInterceptor.java 파일쪽을 찾아봐야겠다...
+       이 에러가 안났다가 다른 파일 추가 후에 나서 그 파일도 같이 살펴봐야 할 것 같음.
