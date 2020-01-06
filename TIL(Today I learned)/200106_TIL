@@ -1,0 +1,32 @@
+오늘 한 것.
+1. 지난주부터 마이바티스 연동 관련 오류를 구글링 해서 나온 모든 방법을 동원해서 해 보았으나 실패...
+   그래서 연동 전 상태로 돌린 후 다시 한단계씩 작업했다.
+   
+2. 인코딩 warning log
+   [WARN] Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!]
+   => pom.xml 에 properties에 다음 두 라인을 추가하면 warning이 사라진다.
+   <properties>
+   ....
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>  
+   </properties>
+   
+3. JDBC 연동 오류
+   Cannot create PoolableConnectionFactory (Could not create connection to database server.)
+  => 처음에는 DB 접근 권한이 없어서 생기는 오류인 줄 알았으나, 로컬호스트에서 접속하는 내 상황에는 해당사항이 없었고,
+     구글링을 통해 8.0버전들어오면서 생긴 버전차이에 의한 오류로 밝혀졌다.
+    <!-- mysql-connector-java -->
+    <dependency>
+       <groupId>mysql</groupId>
+       <artifactId>mysql-connector-java</artifactId>
+       <version>8.0.13</version>
+    </dependency>
+     이렇게바꿔주고 url부분에?serverTimezone=UTC 추가했더니 해결되었음.
+     
+4. jar 파일 오류
+   java.io.FileNotFoundException: ...(경로)...\WEB-INF\lib\mysql-connector-java-5.1.31.jar (지정된 파일을 찾을 수 없습니다)
+   => 8.1 버전의 라이브러리는 추가 되어 있었으나 5.x버전의 파일은 존재하지 않아서 mysql 사이트에서 파일 다운받아서 라이브러리 추가해주었다.
+      그랬더니 드디어 연동되면서 제대로 된 데이터가 나왔다ㅠㅠㅠ
+      
+     
+   
