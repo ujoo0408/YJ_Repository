@@ -14,6 +14,66 @@
 			ORDER BY IDX DESC 
 		]]> 
 	</select>
+	
+	<insert id="insertBoard" parameterType="hashmap"> 
+		<![CDATA[ 
+			INSERT INTO board.TB_BOARD ( 
+					  IDX
+					, TITLE
+					, CONTENTS
+					, HIT_CNT
+					, DEL_GB
+					, CREA_DTM
+					, CREA_ID 
+			) 
+			VALUES ( 
+					  (SELECT TMP_IDX.* FROM( SELECT MAX(IDX)+1 FROM board.TB_BOARD)TMP_IDX)
+					, #{TITLE}
+					, #{CONTENTS}
+					, 0
+					, 'N'
+					, NOW()
+					, 'Admin' 
+			) 
+		]]> 
+	</insert>
+	
+	<update id="updateHitCnt" parameterType="hashmap"> 
+		<![CDATA[ 
+			UPDATE board.TB_BOARD 
+			SET HIT_CNT = IFNULL(HIT_CNT, 0) + 1 
+			WHERE IDX = #{IDX}
+		]]> 
+	</update> 
+	
+	<select id="selectBoardDetail" parameterType="hashmap" resultType="hashmap"> 
+		<![CDATA[ 
+			SELECT IDX
+				 , HIT_CNT
+				 , CREA_ID
+				 , CREA_DTM
+				 , TITLE
+				 , CONTENTS 
+			FROM board.TB_BOARD
+			WHERE IDX = #{IDX} 
+		]]> 
+	</select>
 
+	<update id="updateBoard" parameterType="hashmap"> 
+		<![CDATA[ 
+			UPDATE board.TB_BOARD 
+			SET TITLE = #{TITLE}
+			  , CONTENTS = #{CONTENTS} 
+			WHERE IDX = #{IDX} 
+		]]> 
+	</update>
+	
+	<update id="deleteBoard" parameterType="hashmap"> 
+		<![CDATA[ 
+			UPDATE board.TB_BOARD 
+			SET DEL_GB = 'Y' 
+			WHERE IDX = #{IDX} 
+		]]> 
+	</update>
 </mapper>
 
