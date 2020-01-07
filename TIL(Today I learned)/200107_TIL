@@ -1,0 +1,37 @@
+오늘 한 것.
+1. HandlerMethodArgumentResolver 적용
+  HandlerMethodArgumentResolver 는 스프링 3.1에서 추가된 인터페이스이다.
+  스프링 3.1 이전에는 WebArgumentResolver 라는 인터페이스였는데, 
+  스프링 3.1 이후부터 HandlerMethodArgumentResolver 라는 이름으로 바뀌었다. 
+  
+  HandlerMethodArgumentResolver의 역할은 스프링 사용 시, 컨트롤러(Controller)에 들어오는 파라미터(Parameter)를 
+  수정하거나 공통적으로 추가를 해주어야 하는 경우에 사용자 요청이 Controller에 도달하기 전에 그 요청의 파라미터들을 수정할 수 있도록 해준다.
+
+  예를 들어, 로그인을 한 사용자의 사용자 아이디나 닉네임등을 추가하는것을 생각해보자. 
+  보통 그런 정보는 세션(Session)에 담아놓고 사용하는데, DB에 그러한 정보를 입력할 때에 
+  세션에서 가져오지 않고 사용자 요청이 Controller에 도달하기 전에 그 요청의 파라미터들을 수정할 수 있도록 해준다.
+
+2. 게시판 상세화면, 새로 등록, 수정, 삭제
+   이 과정에서 참고한 블로그에는 쿼리가 Oracle 이었는데 내가 사용한 쿼리는 MySQL라서 생긴 오류들이 있었다.
+   - MySQL Error 1093 : You can't specify target table  
+     => MySQL의 1093에러의 원인은 간단해요 MySQL은 Oracle과 달리 UPDATE나 DELETE 쿼리문을 수행할 때 
+        자기 자신의 테이블의 데이터를 바로 사용하지 못하게 되어 있어서 나오는 에러
+        그래서 서브쿼리를 통해 해결하였다.
+        
+        INSERT INTO board.TB_BOARD ( 
+					  IDX
+					 ...
+			  ) 
+			  VALUES ( 
+					  (SELECT TMP_IDX.* FROM( SELECT MAX(IDX)+1 FROM board.TB_BOARD)TMP_IDX) <= 서브쿼리를 통해 수정된 부분
+					 ...
+			  )
+        
+   - 오라클의 NEXTVAL 
+     시쿼스 증가를 위한 함수 NEXTVAL 이 없기 때문에 MySQL 에서는 해당 값의 MAX를 찾아 +1 해줘야 했다.
+      => SELECT MAX(IDX)+1 FROM board.TB_BOARD
+   - 조회수 업데이트 쿼리 ( NVL -> IFNULL )
+      오라클 : UPDATE TB_BOARD SET HIT_CNT = NVL(HIT_CNT, 0) + 1 WHERE IDX = #{IDX}
+      MySQL : UPDATE TB_BOARD SET HIT_CNT = IFNULL(HIT_CNT, 0) + 1 WHERE IDX = #{IDX}
+
+   
