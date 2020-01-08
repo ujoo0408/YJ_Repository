@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,7 +6,7 @@
 </head>
 <body>
 
-	<form id="frm"> 
+	<form id="frm" name="frm" enctype="multipart/form-data">
 		<table class="board_view"> 
 			<colgroup> 
 				<col width="15%"> 
@@ -29,7 +28,11 @@
 					</td> 
 				</tr> 
 			</tbody> 
-		</table> 
+		</table>
+		
+		<input type="file" name="file">
+		<br/><br/>
+		 
 		<a href="#this" class="btn" id="write" >작성하기</a> 
 		<a href="#this" class="btn" id="list" >목록으로</a> 
 	</form> 

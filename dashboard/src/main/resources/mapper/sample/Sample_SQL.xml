@@ -15,11 +15,10 @@
 		]]> 
 	</select>
 	
-	<insert id="insertBoard" parameterType="hashmap"> 
+	<insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX"> 
 		<![CDATA[ 
 			INSERT INTO board.TB_BOARD ( 
-					  IDX
-					, TITLE
+					  TITLE
 					, CONTENTS
 					, HIT_CNT
 					, DEL_GB
@@ -27,8 +26,7 @@
 					, CREA_ID 
 			) 
 			VALUES ( 
-					  (SELECT TMP_IDX.* FROM( SELECT MAX(IDX)+1 FROM board.TB_BOARD)TMP_IDX)
-					, #{TITLE}
+					  #{TITLE}
 					, #{CONTENTS}
 					, 0
 					, 'N'
@@ -75,5 +73,25 @@
 			WHERE IDX = #{IDX} 
 		]]> 
 	</update>
+	
+	<insert id="insertFile" parameterType="hashmap"> 
+		<![CDATA[ 
+			INSERT INTO board.TB_FILE ( 
+					IDX
+				  , BOARD_IDX
+				  , ORIGINAL_FILE_NAME
+				  , STORED_FILE_NAME
+				  , FILE_SIZE
+				  , CREA_ID ) 
+			VALUES ( 
+					(SELECT TMP_IDX.* FROM( SELECT MAX(IDX)+1 FROM board.TB_FILE)TMP_IDX)
+				  , #{BOARD_IDX}
+				  , #{ORIGINAL_FILE_NAME}
+				  , #{STORED_FILE_NAME}
+				  , #{FILE_SIZE}
+				  , 'Admin' ) 
+		]]> 
+	</insert>
+
 </mapper>
 
