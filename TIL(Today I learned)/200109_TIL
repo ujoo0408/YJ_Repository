@@ -1,0 +1,18 @@
+오늘 한 것. 
+*게시판 다중 파일 업로드 및 수정화면에서의 파일 업로드&삭제 기능 추가
+
+1. ~ must override or implement a supertype method ~ 경고문
+    => Impl 단에서 나는 경고 여서 @Override 를 지워야만 없어지는 경고문 이었는데 꼭 필요한 부분이라
+       어느 부분이 잘못되었나 보았던지 상단에 implements 서비스단을 해주지 않아서 나는 에러였다.
+  
+2. ~types implementing or defining~  에러
+    => 이 에러 또한 implements 서비스단을 해주지 않아서 나는 에러였다.
+    
+3. 업로드한 파일을 다운로드하는 기능을 구현하였는데, 처음 파일을 다운받고 새로고침 없이 다시 다운 받을 시
+   Nullpoint 오류가 남, 다시 새로고침 했을 시 다운 가능.
+   => 2번째 들어올때 controller에 IDX값이 배열로 들어와서 생기는 문제였다.
+      if(gfn_isNull($("[name='IDX']").val())==false){
+          $("[name='IDX']").remove();
+      }
+      값이 제대로 들어오도록 이미 들어간 값을 지워주었다.
+      
