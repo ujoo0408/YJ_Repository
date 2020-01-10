@@ -78,6 +78,11 @@
 			var idx = "${map.IDX}"; 
 			var comSubmit = new ComSubmit(); 
 			comSubmit.setUrl("<c:url value='/sample/openBoardUpdate.do' />"); 
+			
+			if(gfn_isNull($("[name='IDX']").val())==false){
+				$("[name='IDX']").remove();
+				}
+			
 			comSubmit.addParam("IDX", idx); 
 			comSubmit.submit(); 
 		} 
@@ -91,7 +96,6 @@
 				$("[name='IDX']").remove();
 				}
 
-			
 			comSubmit.addParam("IDX", idx); 
 			comSubmit.submit(); 
 		}
