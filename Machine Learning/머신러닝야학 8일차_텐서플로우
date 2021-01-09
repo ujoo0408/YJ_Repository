@@ -1,0 +1,114 @@
+* 표를 다루는 도구 '판다스'
+- '판다스'를 이용하여 데이터 다루는 방법을 배우는 수업.
+  모델을 학습시키기 위하여 파일로부터 데이터를 읽어들이고,
+  독립변수와 종속변수를 분리하여 데이터 준비합니다. 
+
+- 데이터 준비하기 1
+  데이터를 불러온다
+  종속변수와 독립변수로 분리한다.
+  데이터를 불러온다
+  종속변수와 독립변수로 분리한다.
+  실습을 통해 배울 도구들
+
+  파일 읽어오기: read_csv('/경로/파일명.csv')  
+  모양 확인하기: 데이터.shape
+  칼럼 선택하기: 데이터[['칼럼명1', '칼럼명2', '칼럼명3']]
+  칼럼 이름 출력하기: 데이터.columns
+  맨 위 5개 관측치 출력하기: 데이터.head()
+
+  샘플 데이터
+  (실습 데이터가 제공되었지만 내 깃허브에 직접 데이터도 만들어 보았습니다.)
+  
+- 레모네이드 : raw.githubusercontent.com/ujoo0408/YJ_Repository/master/Machine%20Learning/CSV/Lemonade.csv
+- 보스턴 : raw.githubusercontent.com/ujoo0408/YJ_Repository/master/Machine%20Learning/CSV/Boston.csv
+- 아이리스 : raw.githubusercontent.com/ujoo0408/YJ_Repository/master/Machine%20Learning/CSV/Iris.csv
+
+#실습코드 
+
+-판다스 라이브러리 사용법
+
+#판다스 라이브러리 선언
+import pandas as pd
+
+#판다스 라이브러리 이용해서 데이터 다루는 방법 배우기 
+#2021.01.09 
+
+#파일로부터 데이터 읽어오기
+path = 'https://raw.githubusercontent.com/ujoo0408/YJ_Repository/master/Machine%20Learning/CSV/Lemonade.csv'
+Lemonade = pd.read_csv(path)
+
+path = 'https://raw.githubusercontent.com/ujoo0408/YJ_Repository/master/Machine%20Learning/CSV/Boston.csv'
+Boston = pd.read_csv(path)
+
+path = 'https://raw.githubusercontent.com/ujoo0408/YJ_Repository/master/Machine%20Learning/CSV/Iris.csv'
+Iris = pd.read_csv(path)
+
+#데이터 모양확인
+print(Lemonade.shape)
+print(Boston.shape)
+print(Iris.shape)
+
+# 독립변수와 종속변수 분리
+independent_val = Lemonade[['Sales']]
+dependent_val  = Lemonade[['Temperature']]
+print(independent_val.shape, dependent_val.shape)
+ 
+independent_val = Boston[['crim', 'zn', 'indus', 'chas', 'nox', 
+                          'rm', 'age', 'dis', 'rad', 'tax',
+                          'ptratio', 'b', 'lstat']]
+dependent_val = Boston[['medv']]
+print(independent_val.shape, dependent_val.shape)
+ 
+independent_val = Iris[['length', 'width', 'under_length', 'under_width']]
+dependent_val = Iris[['kind']]
+print(independent_val.shape, dependent_val.shape)
+
+# 각각의 데이터 확인해보기
+print(Lemonade.head())
+print(Boston.head())
+print(Iris.head())
+
+############################################
+# 첫번째 딥러닝 : 레모네이드 예측
+# 2020.01.09
+############################################
+# 라이브러리 사용
+import tensorflow as tf
+import pandas as pd
+
+#데이터 준비
+path = 'https://raw.githubusercontent.com/ujoo0408/YJ_Repository/master/Machine%20Learning/CSV/Lemonade.csv'
+Lemonade = pd.read_csv(path)
+print(Lemonade.head())
+
+# 독립변수, 종속변수 
+independent_val = Lemonade[['Sales']]
+dependent_val  = Lemonade[['Temperature']]
+print(independent_val.shape, dependent_val.shape)
+
+# 모델을 만듭니다.
+X = tf.keras.layers.Input(shape=[1])
+Y = tf.keras.layers.Dense(1)(X)
+model = tf.keras.models.Model(X, Y)
+model.compile(loss='mse')
+ 
+# 모델을 학습시킵니다. 
+model.fit(independent_val, dependent_val, epochs=1000, verbose=0)
+#verbose=0이면 화면 출력 안함
+model.fit(independent_val, dependent_val, epochs=10)
+
+# 모델을 이용합니다. 
+print(model.predict(dependent_val))
+print(model.predict([[15]]))
+ 
+
+
+ 
+
+
+
+ 
+
+
+
+ 
