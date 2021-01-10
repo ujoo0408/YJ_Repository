@@ -1,0 +1,75 @@
+*두번째 딥러닝 - 보스턴 집값 예측
+
+ - 보스턴 집값을 예측하는 딥러닝 모델을 텐서플로우를 이용하여 만들어 보고,
+  모델을 구성하는 퍼셉트론에 대해 이해합니다.
+
+- 강의 : 보스턴 집값 예측을 위한 수식에 대한 기본설명
+  1978년도 미국 보스턴 주 506개 타운들의 집값.
+  각의 행은 타운 열은 타운의 특성
+  MEDV : 타운의 집 값의 중앙 값
+
+# 데이터의 대한 이해가 부족해서 벽에 부딫혔을 경우엔 통계에 대해 공부해보자!
+
+- 수식과 퍼셉트론
+  보스턴 집값 예측을 위한 과정
+=> 독립변수가 13개, 종속변수가 1개이다! (shape = 13, Dense =1)
+
+퍼셉트론 : 인공 신경망에서 뉴런의 역할을 하는 수식의 이름
+
+- 실습 코드 
+
+# 라이브러리 사용
+import tensorflow as tf
+import pandas as pd
+
+#파일로부터 데이터 읽어오기
+path = 'https://raw.githubusercontent.com/ujoo0408/YJ_Repository/master/Machine%20Learning/CSV/Boston.csv'
+Boston = pd.read_csv(path)
+
+# 독립변수와 종속변수 분리 
+independent_val = Boston[['crim', 'zn', 'indus', 'chas', 'nox', 
+                          'rm', 'age', 'dis', 'rad', 'tax',
+                          'ptratio', 'b', 'lstat']]
+dependent_val = Boston[['medv']]
+
+# shape 확인하는 것을 소홀히 하지 말 것!
+print(independent_val.shape, dependent_val.shape) 
+
+# 모델을 만듭니다.
+X = tf.keras.layers.Input(shape=[13])
+Y = tf.keras.layers.Dense(1)(X)
+model = tf.keras.models.Model(X, Y)
+model.compile(loss='mse')
+
+# 모델을 학습시킵니다. 
+model.fit(independent_val, dependent_val, epochs=10000, verbose=0)
+#verbose=0이면 화면 출력 안함
+model.fit(independent_val, dependent_val, epochs=5)
+
+# 4. 모델을 이용합니다
+# predict : 파이썬 함수, 일부의 값만 가져오기
+print(model.predict(independent_val[0:5]))
+# 종속변수 확인
+print(dependent_val[0:5])
+
+# 모델의 수식 확인
+print(model.get_weights())
+
+
+* 학습의 실제 (with 워크북)
+
+- 딥러닝 워크북에서 손으로 모델을 학습시켜 보며 딥러닝이 학습하는 원리를 배웁니다.
+- 가중치 학습의 과정을 손으로 직접 해볼 수 있는 워크북
+
+- 워크북 이용방법
+1. 초기값 생성기를 통해 나오는 값을 복사하여 W와 B값을 넣어준다.
+2. 결과인 W, B 그리고 자동으로 생성되는 Loss 값을 복사하여 history에 넣는다.
+3. prevLoss 에 Loss 값을 복사하여 넣어준다.
+4-1. W값을 0.0001을 더한 값으로 고쳐주고 dLoss / dt의 값 변화를 관찰한다.
+4-2. 결과값 dLoss / dt를 dLoss / dW에 넣어준다.
+4-3. W값을 원래대로 고친다.
+5-1. B값을 0.0001을 더한 값으로 고쳐주고 dLoss / dt의 값을 관찰한다.
+5-2. 결과값 dLoss / dt를 dLoss / dB에 넣어준다.
+5-3. B값을 원래대로 고친다.
+6. next W, next B의 값을 복사하여 W, B에 넣어주고 Loss를 확인한다.
+7. 2번부터 다시 반복한다.
