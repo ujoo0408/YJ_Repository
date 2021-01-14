@@ -1,0 +1,31 @@
+# 1년만의 업로드
+------------------------------------------------------------------------------------
+화면 캡쳐 후 파일로 저장 
+참고 링크: https://sub0709.tistory.com/48 
+------------------------------------------------------------------------------------
+
+
+--추가해 줘야하는 js (익스플로러가 promise 지원 =하지 않아서 promise도 추가해야 한다.)
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+
+
+
+-- 적용 소스
+
+
+$("#버튼ID").on('click', function (e) { -- 함수로 사용해도 상관 없움
+    -- 전체영역 캡쳐 시 document.body 사용
+	html2canvas(document.getElementById("캡쳐할 영역")).then(function (canvas) {
+		if (navigator.msSaveBlob) { --익스플로러 예외처리
+			var blob = canvas.msToBlob();
+			return navigator.msSaveBlob(blob, '파일명.png');
+		} else {
+			var el = document.getElementById("target");
+			el.href = canvas.toDataURL("image/jpeg"); 
+			el.download = '파일명.png';
+			el.click();
+		}
+	});
+});
